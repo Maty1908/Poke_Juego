@@ -17,8 +17,8 @@
 |                                                                              ⠀⠀⠀⠀⠀⠀⠀⠀⠉⠀⠀⠹⣄⣀⡤⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ```
 
-# __ Trabajo Practico Final __ # 
-### Alumnos:  _ Nahuel Savoy, Ramiro arbelo, Matias Miremont _ ###
+# __Trabajo Practico Final__ # 
+### Alumnos:  *Nahuel Savoy, Ramiro arbelo, Matias Miremont* ###
 
 ## Este juego de pokemon esta basado en la 1era generacion (remakes Rojo Fuego y Verde Hoja), no sigue la linea temporal del mismo, es solo el comienzo de lo que se podria hacer con estas librerias ##
 
