@@ -1,13 +1,3 @@
-<p align="center">
-  <img src="https://img.shields.io/github/stars/TU_USUARIO/TU_REPO?style=for-the-badge&color=yellow" alt="Stars">
-  <img src="https://img.shields.io/github/forks/TU_USUARIO/TU_REPO?style=for-the-badge&color=blue" alt="Forks">
-  <img src="https://img.shields.io/github/license/TU_USUARIO/TU_REPO?style=for-the-badge&color=red" alt="License">
-</p>
-
----
-
-## 🎨 Arte ASCII
-
 ```text
 |                                  ,'\                                         ⠀⠀⠀⠀⠀⢸⠓⢄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 |    _.----.        ____         ,'  _\   ___   ___     ____                   ⠀⠀⠀⠀⠀⢸⠀⠀⠑⢤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
@@ -25,6 +15,7 @@
 |⠀⠀⠀                                                                           ⠙⣶⣶⣿⠢⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 |                                                                              ⠀⠀⠀⠉⠀⠀⠀⠙⢿⣳⠞⠳⡄⠀⠀⠀⢀⡞⠀⠀⠀⠀⠀⠀⠀⠀⠀
 |                                                                               ⠀⠀⠀⠀⠀⠀⠀⠀⠉⠀⠀⠹⣄⣀⡤⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+
 Trabajo Practico Final 
 Alumnos:  Nahuel Savoy, Ramiro arbelo, Matias Miremont
 
