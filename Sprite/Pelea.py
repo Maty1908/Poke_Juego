@@ -17,8 +17,8 @@ fondo_pantalla = ImageTk.PhotoImage(imagen_fondo_original)
 
 canvas.create_image(0, 0, image=fondo_pantalla, anchor="nw")
 
-pokemon_rival_id = canvas.create_image(785, 200, anchor="center")
-pokemon_mio_id = canvas.create_image(245, 300, anchor="center")
+pokemon_rival_id = canvas.create_image(750, 200, anchor="center")
+pokemon_mio_id = canvas.create_image(300, 300, anchor="center")
 
 gif_rival = []      # Destino un almacen para el gif del rival 
 gif_mio = []        # Destino un almacen para el gif del propio
