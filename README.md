@@ -37,21 +37,16 @@
 
 PROCESO (BORRAR ANTES DE ENTREGAR)
 
-creacion de clases pokemones y matematicas de daño
-
-pensar en recibir el daño, luego llamar a metodos que "ataquen" (callean a metodos que hacen que el otro pokemon reciba el daño pasando parametros como enemigo y movimiento [con su tipo obvio])
-
-manejo parte grafica
-
-sprites mapa, jugador y pokemones
-
-eleccion del pokemon (starters, con posibilidad de cambio de nombres)
-
-sistema de niveles
-
-mundo abierto con aparicion de pokemones
-
-luego de tener a 6 poder pelear con otros entrenadores
-
-movimiento fluido del jugador
-
+mundo abierto:
+    - tienda 
+        - compran cajas:
+            - poke caja comun  25
+            - poke caja especial 50
+            - poke caja rara 100
+            - poke caja legendaria 200
+    - batallas
+        - primera batalla tenes un solo pokemon random 
+        - por batalla ganada ganas de 5 a 15 monedas con un random  
+        - chances del 1% de que tu pokemon evolucione en el medio de una pelea
+        - 
+    
