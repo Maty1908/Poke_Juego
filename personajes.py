@@ -4,6 +4,10 @@ import estilo
 
 class personaje():
     def __init__(self, x, y, ruta_spritesheet):
+        self.__objetos = {}           #diccionario con objetos y cantidad
+        self.__pokemons = []          #lista de pokemons (objetos de python)
+        self.__billetera = 100        #dinero del jugador INICIAL!!!!!
+
         # 1. Cargamos la hoja de sprites completa
         spritesheet = pygame.image.load(ruta_spritesheet).convert_alpha()
         
@@ -113,3 +117,8 @@ class personaje():
         
         # Dibujamos la hitbox roja para desarrollo
         pygame.draw.rect(ventana, (255, 0, 0), self.forma, 1)
+        
+    #----------Getters y Setters----------
+    @property
+    def obtener_dinero(self):
+        return self.__billetera
