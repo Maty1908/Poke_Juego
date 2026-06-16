@@ -22,6 +22,8 @@
 
 ## Este juego de pokemon esta basado en la 1era generacion (remakes Rojo Fuego y Verde Hoja), no sigue la linea temporal del mismo, es solo el comienzo de lo que se podria hacer con estas librerias ##
 
+#PARA CORRER EL JUEGO DESCARGAR EL .ZIP Y EJECUTAR EL ARCHIVO: "index.py"
+
 
 ## Objetivos del proyecto: ##
  
