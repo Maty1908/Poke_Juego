@@ -10,6 +10,10 @@ def escenario_tienda(ventana,personaje_elegido):
     imagen_fondo = pygame.image.load(os.path.join(estilo.DIRECTORIO_BASE,"img/Tienda/tienda.png")).convert() 
     imagen_fondo = pygame.transform.scale(imagen_fondo, (estilo.ANCHO_VENTANA, estilo.ALTO_VENTANA))
 
+    imagen_mueble = pygame.image.load(os.path.join(estilo.DIRECTORIO_BASE, "img", "mundo_libre", "mueble.png")).convert_alpha() 
+    imagen_mueble1 = pygame.image.load(os.path.join(estilo.DIRECTORIO_BASE, "img", "mundo_libre", "mueble1.png")).convert_alpha() 
+
+
     jugador = personaje(532, 640, os.path.join(estilo.DIRECTORIO_BASE, f"img/skins/{personaje_elegido}/OV.png"))
 
     reloj = pygame.time.Clock()
@@ -28,9 +32,12 @@ def escenario_tienda(ventana,personaje_elegido):
 
         # La clase se encarga de mover y setear la animación correcta
         jugador.movimiento(delta_x, delta_y)
-        ventana.blit(imagen_fondo, (0, 0))
-        ventana.blit(imagen_fondo, (0, 0))
+        ventana.blit(imagen_fondo, (0, 0)) 
+        jugador.dibujar(ventana) 
+        ventana.blit(imagen_mueble, (111, 486)) 
+        ventana.blit(imagen_mueble1, (682, 424))
+        ventana.blit(imagen_mueble1, (872, 424))
         
-        jugador.dibujar(ventana)
+        
         pygame.display.update()
         reloj.tick(estilo.FPS)
