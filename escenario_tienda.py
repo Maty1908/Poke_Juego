@@ -9,7 +9,7 @@ def escenario_tienda():
     ventana = pygame.display.set_mode((estilo.ANCHO_VENTANA, estilo.ALTO_VENTANA))
     pygame.display.set_caption("PokeJuego")
 
-    imagen_fondo = pygame.image.load(os.path.join(estilo.DIRECTORIO_BASE, "img", "mundo_libre", "tienda1.png")).convert() 
+    imagen_fondo = pygame.image.load(os.path.join(estilo.DIRECTORIO_BASE, "img", "mundo_libre", "tienda.png")).convert() 
     imagen_fondo = pygame.transform.scale(imagen_fondo, (estilo.ANCHO_VENTANA, estilo.ALTO_VENTANA))
 
     jugador = personaje(532, 640, os.path.join(estilo.DIRECTORIO_BASE, f"img/skins/{profe}/OV.png"))
