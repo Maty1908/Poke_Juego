@@ -1,4 +1,3 @@
-# personajes.py
 import pygame
 import estilo
 
@@ -114,9 +113,6 @@ class personaje():
         # Dibujamos al personaje
         imagen_a_dibujar = self.animaciones[self.direccion][self.frame_actual]
         ventana.blit(imagen_a_dibujar, self.forma.topleft)
-        
-        # Dibujamos la hitbox roja para desarrollo
-        pygame.draw.rect(ventana, (255, 0, 0), self.forma, 1)
         
     #----------Getters y Setters----------
     @property
