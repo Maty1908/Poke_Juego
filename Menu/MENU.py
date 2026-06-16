@@ -1,4 +1,3 @@
-
 import pygame,os,sys
 
 
@@ -11,13 +10,13 @@ def menu_inicial(ventana,personaje_elegido):
     ANCHO = 1064
     ALTO = 704
 
-    fondo = pygame.image.load("Poke_Juego/img/Menu/campus_juego.png")
+    fondo = pygame.image.load("img/Menu/campus_juego.png")
 
     fondo = pygame.transform.scale(fondo, (ANCHO, ALTO))
 
     # ---------------- FUENTES ----------------
 
-    RUTA_FUENTE = "Poke_Juego/tipografia/PressStart2P.ttf"
+    RUTA_FUENTE = "tipografia/PressStart2P.ttf"
 
     # Opciones del menú
     fuente = pygame.font.Font(RUTA_FUENTE,22)
