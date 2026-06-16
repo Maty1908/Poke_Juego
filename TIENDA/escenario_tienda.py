@@ -26,8 +26,8 @@ def escenario_tienda(ventana,personaje_elegido):
         
         teclas = pygame.key.get_pressed()
         
-        delta_x = (teclas[pygame.K_d] - teclas[pygame.K_a]) * estilo.VELOCIDAD
-        delta_y = (teclas[pygame.K_s] - teclas[pygame.K_w]) * estilo.VELOCIDAD
+        delta_x = (teclas[pygame.K_RIGHT] - teclas[pygame.K_LEFT]) * estilo.VELOCIDAD
+        delta_y = (teclas[pygame.K_DOWN] - teclas[pygame.K_UP]) * estilo.VELOCIDAD
 
         # La clase se encarga de mover y setear la animación correcta
         jugador.movimiento(delta_x, delta_y)
