@@ -26,8 +26,8 @@ def escenario_mundo(ventana,jugador):
         delta_y = (teclas[pygame.K_DOWN] - teclas[pygame.K_UP]) * estilo.VELOCIDAD_MUNDO_LIBRE
 
 
-        # Agregamos los NPC a los límites para que no los pueda atravesar caminando
-        limites_totales = estilo.LIMITES_MUNDO_LIBRE | estilo.NPC_MUNDO_LIBRE
+       
+        limites_totales = estilo.LIMITES_MUNDO_LIBRE
         jugador.movimiento(delta_x, delta_y, limites_totales)
 
         accion = jugador.interactuar(teclas)
