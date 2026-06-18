@@ -11,7 +11,7 @@ class personaje():
         self.pokemons = []          #lista de pokemons (objetos de python)
         self.escalas_mapas = {"tienda": 0.25,"mundo":0.125} #inicializamos al personaje en el mundo libre con esta escala
         self.ruta_spritesheet = ruta_spritesheet
-      
+        self.ultimo_viaje = 0
     
         # Estados iniciales del personaje
         self.direccion = "abajo"
@@ -121,10 +121,12 @@ class personaje():
 
     def interactuar(self, teclas):
             # Verificamos si la tecla 'C' está presionada
-
-
             if teclas[pygame.K_c]:
-                
+                ahora = pygame.time.get_ticks()
+                if ahora - self.ultimo_viaje < 600: 
+                    return None
+                self.ultimo_viaje = ahora
+                            
                 # 1. Comprobar colisión con la Entrada de la Tienda
                 for (tienda_x, tienda_y, ancho, alto) in estilo.ENTRADA_TIENDA:
                     rect_tienda = pygame.Rect(tienda_x, tienda_y, ancho, alto)
