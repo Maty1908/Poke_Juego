@@ -133,6 +133,12 @@ class personaje():
                     if self.forma.colliderect(rect_tienda):
                         return "TIENDA"
                     
+                for (compra_x, compra_y, ancho, alto) in estilo.MOSTRADOR:
+                    rect_mostrador = pygame.Rect(compra_x, compra_y, ancho, alto)
+                    if self.forma.colliderect(rect_mostrador):
+                        return "COMPRAR"
+                
+                    
                 for (tienda_x, tienda_y, ancho, alto) in estilo.SALIDA_TIENDA:
                     rect_tienda = pygame.Rect(tienda_x, tienda_y, ancho, alto)
                     if self.forma.colliderect(rect_tienda):
