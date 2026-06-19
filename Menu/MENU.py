@@ -1,5 +1,5 @@
 import pygame,os,sys
-
+import estilo
 
 
 def menu_inicial(ventana,personaje_elegido):
@@ -7,12 +7,11 @@ def menu_inicial(ventana,personaje_elegido):
     pygame.display.set_caption("Poke-Unsam - Menu")
 
     # ---------------- FONDO ----------------
-    ANCHO = 1064
-    ALTO = 704
+   
 
     fondo = pygame.image.load("img/Menu/campus_juego.png")
 
-    fondo = pygame.transform.scale(fondo, (ANCHO, ALTO))
+    fondo = pygame.transform.scale(fondo, (estilo.ANCHO_VENTANA, estilo.ALTO_VENTANA))
 
     # ---------------- FUENTES ----------------
 
@@ -85,7 +84,7 @@ def menu_inicial(ventana,personaje_elegido):
             ventana.blit(fondo, (0, 0))
 
             # Oscurecer el fondo
-            capa = pygame.Surface((ANCHO, ALTO))
+            capa = pygame.Surface((estilo.ANCHO_VENTANA,estilo.ALTO_VENTANA))
             capa.set_alpha(80)
             capa.fill((0, 0, 0))
             ventana.blit(capa, (0, 0))
@@ -93,18 +92,18 @@ def menu_inicial(ventana,personaje_elegido):
             # Sombra del título
             sombra = fuente_titulo.render("Poke-Unsam",True,(0, 0, 0))
 
-            ventana.blit(sombra,(ANCHO // 2 - sombra.get_width() // 2 + 4,108))
+            ventana.blit(sombra,(estilo.ANCHO_VENTANA // 2 - sombra.get_width() // 2 + 4,108))
 
             # Título principal
             titulo = fuente_titulo.render("Poke-Unsam",True,(0, 100, 255))
 
-            ventana.blit(titulo,(ANCHO // 2 - titulo.get_width() // 2,100))
+            ventana.blit(titulo,(estilo.ANCHO_VENTANA // 2 - titulo.get_width() // 2,100))
 
             botones = []
 
             for i, opcion in enumerate(opciones):
 
-                x = ANCHO // 2 - 200
+                x = estilo.ANCHO_VENTANA // 2 - 200
                 y = 280 + i * 125
 
                 rect = pygame.Rect(x,y,350,50)
@@ -135,7 +134,7 @@ def menu_inicial(ventana,personaje_elegido):
 
             texto = fuente_ventanas.render("Aca debera estar: Juego",True,(255, 255, 255))
 
-            ventana.blit(texto,(ANCHO // 2 - texto.get_width() // 2,ALTO // 2 - texto.get_height() // 2))
+            ventana.blit(texto,(estilo.ANCHO_VENTANA // 2 - texto.get_width() // 2,estilo.ALTO_VENTANA // 2 - texto.get_height() // 2))
 
         # ---------------- TIENDA ----------------
         elif estado == "tienda":
@@ -144,7 +143,7 @@ def menu_inicial(ventana,personaje_elegido):
 
             texto = fuente_ventanas.render("Aca debera estar: Tienda",True,(255, 255, 255))
 
-            ventana.blit(texto,(ANCHO // 2 - texto.get_width() // 2,ALTO // 2 - texto.get_height() // 2))
+            ventana.blit(texto,(estilo.ANCHO_VENTANA // 2 - texto.get_width() // 2,estilo.ALTO_VENTANA // 2 - texto.get_height() // 2))
 
         # ---------------- GRACIAS ----------------
         elif estado == "gracias":
@@ -153,7 +152,7 @@ def menu_inicial(ventana,personaje_elegido):
 
             texto = fuente_ventanas.render("Aca debera estar: Gracias",True,(255, 255, 255))
 
-            ventana.blit(texto,(ANCHO // 2 - texto.get_width() // 2,ALTO // 2 - texto.get_height() // 2))
+            ventana.blit(texto,(estilo.ANCHO_VENTANA // 2 - texto.get_width() // 2,estilo.ALTO_VENTANA // 2 - texto.get_height() // 2))
 
         pygame.display.update()
         reloj.tick(60)
