@@ -91,7 +91,28 @@ LIMITES_MUNDO_LIBRE = {
     (58, 378, 3, 1), (206, 370, 3, 1), (330, 370, 3, 1), (25, 275, 3, 1), (450, 150, 3, 1), (430, 75, 3, 1),  
 }
 
+
+
+INFO_OBJ = []  #meter cuadros para saber que es cada cosa
+ 
+HITBOX_OBJ = [#                            x , y, ancho, alto
+    {"nombre":"normal","rect": pygame.Rect(447, 219, 125, 43)},
+    {"nombre":"especial","rect": pygame.Rect(587, 219, 125, 43)},
+    {"nombre":"rara","rect": pygame.Rect(723, 219, 125, 43)},
+    {"nombre":"legendaria","rect": pygame.Rect(865, 219, 125, 43)},
+    
+    #objetos
+    {"nombre":"pocion","rect": pygame.Rect(531, 464, 125, 43)},
+    {"nombre":"revivir","rect": pygame.Rect(700, 464, 125, 43)}
+    
+    ]
+
+
+    
+
+
 #                 x , y, ancho, alto
-NPC_MUNDO_LIBRE ={(169,192,25,30),(730,175,25,30),(894,480,25,30)}   #npc muelle, cueva y bosque
-ENTRADA_TIENDA = {(117,613,25,30)}
-SALIDA_TIENDA = {(530,668,25,30)}
+NPC_MUNDO_LIBRE ={(134,179,41,25),(725,175,53,25),(862,463,69,69)}   #npc muelle, cueva y bosque
+ENTRADA_TIENDA = {(107,614,53,22)}
+SALIDA_TIENDA = {(453,649,161,53)}
+MOSTRADOR = {(142,385,250,10)} #interaccion comprar
