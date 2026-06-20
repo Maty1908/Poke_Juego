@@ -13,19 +13,25 @@ import Personaje
 import estilo
 from TIENDA.tienda import Tienda
 from TIENDA.mostrador import mostrador
+from Sonido.Funcion_audio import reproducir_musica
+
 
 ventana = pygame.display.set_mode((1064, 704))
 
 
 estado = "MENU"
 
+reproducir_musica("menu.mp3",bucle=True)
+
 profe_elegido = None
 
 ejecutar = True
 
+
 while ejecutar:
     
     if estado == "MENU":
+       
         eleccion_menu = menu_inicial(ventana,profe_elegido)
         estado = eleccion_menu
         
@@ -35,6 +41,9 @@ while ejecutar:
         jugador = Personaje.personaje(os.path.join(estilo.DIRECTORIO_BASE, f"img/skins/{profe_elegido}/OV.png")) #creamos al jugador
         tienda = Tienda() #creamos a la tienda
 
+
+        pygame.mixer.music.stop()
+        reproducir_musica("mundo.mp3",bucle=True)
 
         estado = "MUNDO_LIBRE"
 
@@ -46,18 +55,30 @@ while ejecutar:
 
 
     elif estado == "TIENDA":
-        
+
+        pygame.mixer.music.stop()
+        reproducir_musica("tienda.mp3",bucle=True)
+
+
         accion_jugador = escenario_tienda(ventana,jugador)
 
         if accion_jugador == "SALIR":
+
+            pygame.mixer.music.stop()
+            reproducir_musica("mundo.mp3",bucle=True)
+
             estado = "MUNDO_LIBRE"
 
         elif accion_jugador == "COMPRAR":
+            
             estado = mostrador(ventana,jugador,tienda)
            
  
 
     elif estado == "PELEANDO":
+
+        pygame.mixer.music.stop()
+        reproducir_musica("pelea.mp3",bucle=True)
 
         resultado_pelea = batalla()
         if resultado_pelea == "ganaste":
