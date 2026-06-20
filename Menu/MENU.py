@@ -95,7 +95,7 @@ def menu_inicial(ventana,personaje_elegido):
             ventana.blit(sombra,(estilo.ANCHO_VENTANA // 2 - sombra.get_width() // 2 + 4,108))
 
             # Título principal
-            titulo = fuente_titulo.render("Poke-Unsam",True,(0, 100, 255))
+            titulo = fuente_titulo.render("Poke-Unsam",True,(255, 255, 255))
 
             ventana.blit(titulo,(estilo.ANCHO_VENTANA // 2 - titulo.get_width() // 2,100))
 
