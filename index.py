@@ -1,87 +1,65 @@
 import pygame,os
-
-
 pygame.init()   #se pone esto primero ya que al importar las funciones con los escenarios
-#                tiene que estar iniciado
-
-from Seleccion.seleccion_personaje import menu_seleccion
-from TIENDA.escenario_tienda import escenario_tienda
+#              tiene que estar iniciado
 from Menu.MENU import menu_inicial
-from Peleas.sprite_combate import batalla
-from Mundo_libre.Escenario_mundo import escenario_mundo
+from Sonido.Funcion_audio import reproducir_musica
 import Personaje
 import estilo
-from TIENDA.tienda import Tienda
-from TIENDA.mostrador import mostrador
-from Sonido.Funcion_audio import reproducir_musica
-
 
 ventana = pygame.display.set_mode((1064, 704))
-
-
 estado = "MENU"
-
 reproducir_musica("menu.mp3",bucle=True)
-
 profe_elegido = None
-
 ejecutar = True
-
 
 while ejecutar:
     
     if estado == "MENU":
-       
         eleccion_menu = menu_inicial(ventana,profe_elegido)
         estado = eleccion_menu
         
     elif estado == "SELECCION":
-
+        from Seleccion.seleccion_personaje import menu_seleccion
+        from TIENDA.tienda import Tienda
+        import Personaje
+        
         profe_elegido = menu_seleccion(ventana)
         jugador = Personaje.personaje(os.path.join(estilo.DIRECTORIO_BASE, f"img/skins/{profe_elegido}/OV.png")) #creamos al jugador
         tienda = Tienda() #creamos a la tienda
-
-
+        
         pygame.mixer.music.stop()
         reproducir_musica("mundo.mp3",bucle=True)
-
         estado = "MUNDO_LIBRE"
-
-
+        
     elif estado == "MUNDO_LIBRE":
-
+        from Mundo_libre.Escenario_mundo import escenario_mundo
+        
         accion_jugador = escenario_mundo(ventana,jugador)
         estado = accion_jugador
-
-
+        
     elif estado == "TIENDA":
-
+        from TIENDA.escenario_tienda import escenario_tienda # <--- Acá
+        from TIENDA.mostrador import mostrador
+        
         pygame.mixer.music.stop()
         reproducir_musica("tienda.mp3",bucle=True)
-
-
         accion_jugador = escenario_tienda(ventana,jugador)
-
+        
         if accion_jugador == "SALIR":
-
             pygame.mixer.music.stop()
             reproducir_musica("mundo.mp3",bucle=True)
-
             estado = "MUNDO_LIBRE"
-
-        elif accion_jugador == "COMPRAR":
             
+        elif accion_jugador == "COMPRAR":
             estado = mostrador(ventana,jugador,tienda)
-           
- 
-
+            
     elif estado == "PELEANDO":
+            from Peleas.sprite_combate import batalla
+            
             pygame.mixer.music.stop()
             reproducir_musica("pelea.mp3", bucle=True) 
-
-           
-            accion_retorno = batalla(ventana, jugador)
             
+            accion_retorno = batalla(ventana, jugador)
             
             pygame.mixer.music.stop()
             reproducir_musica("mundo.mp3", bucle=True)
