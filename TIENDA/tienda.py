@@ -1,11 +1,9 @@
-import random,sys,os
-import Personaje
+import random, threading
 from TIENDA.Animacion_cajas import mostrar_animacion_caja
-from pokemons.PokePlantilla import Pokemon
 
 class Tienda():   
 
-    #clasificacion de pokemons por rareza (inventada por nosotros)
+    # Clasificación de pokemons por rareza
     POKEDEX = {
         "normal": {
             16: "Pidgey", 17: "Pidgeotto", 19: "Rattata", 20: "Raticate", 21: "Spearow", 22: "Fearow",
@@ -45,70 +43,70 @@ class Tienda():
         }
     }
 
-    #---------------------------INICIADOR---------------------------------
     def __init__(self):
-        self.cajas = {"normal": 50, "especial": 75, "rara": 125, "legendaria": 250} #cajas y precios
-        self.objetos_tienda = {"pocion": 30, "revivir": 50} #objetos a vender
+        self.cajas = {"normal": 50, "especial": 75, "rara": 125, "legendaria": 250} 
+        self.objetos_tienda = {"pocion": 30, "revivir": 50} 
 
-    #-----------------METODOS------------------------------------
     @staticmethod
     def pokemons_caja(tipo_caja):
         id_aleatorio = random.choice(list(Tienda.POKEDEX[tipo_caja].keys()))
         return id_aleatorio, Tienda.POKEDEX[tipo_caja][id_aleatorio]    
-        # Elige una ID al azar de las llaves del tipo de caja y devuelve (ID, Nombre)
-        #.keys() devuelve los ID de pokemones en la categoria seleccionada
-        #Y antes metemos un list() asi podemos usar la funcion random.choice
-        #que elige un elemento al azar de una LISTA
 
-    def abrir_caja(self, jugador, tipo_de_caja,ventana):
-    
-            costo = self.cajas[tipo_de_caja]
-            
-            if jugador.billetera < costo:
-                print("¡Saldo insuficiente!")
-                return
-            
+    def _hilo_cargar_pokemon(self, id_p, jugador, contenedor_resultado):
+        from pokemons.PokePlantilla import Pokemon
+        # Esto tarda por la petición HTTP, pero al estar en otro hilo no traba Pygame
+        nuevo_pokemon = Pokemon(id_p)
+        contenedor_resultado["pokemon"] = nuevo_pokemon
 
-            rutas_cajas = {
+    def abrir_caja(self, jugador, tipo_de_caja, ventana):
+        costo = self.cajas[tipo_de_caja]
+        
+        if jugador.billetera < costo:
+            print("¡Saldo insuficiente!")
+            return
+        
+        rutas_cajas = {
             "normal": "img/Cajas_Frames/Poke_U.png",      
-            "especial": "img/Cajas_Frames/Poke_R.png",  #CORREGIR SPRITES 
+            "especial": "img/Cajas_Frames/Poke_R.png",  
             "rara": "img/Cajas_Frames/Poke_M.png",        
-            "legendaria": "img/Cajas_Frames/Poke_N.png"}
+            "legendaria": "img/Cajas_Frames/Poke_N.png"
+        }
 
-            ruta_animacion = rutas_cajas.get(tipo_de_caja, "img/Cajas_Frames/Poke_N.jpg")
+        ruta_animacion = rutas_cajas.get(tipo_de_caja, "img/Cajas_Frames/Poke_N.jpg")
 
-            jugador.billetera -= costo  
-            id_p, nombre_p = Tienda.pokemons_caja(tipo_de_caja) #guardamos ID y nombre del pokemon
-            nombre_poke = nombre_p
-            nuevo_pokemon = Pokemon(id_p)
-            
-           
-            # Bloquea el flujo, muestra los frames de la caja seleccionada y espera el ENTER
-            mostrar_animacion_caja(ventana, ruta_animacion,nombre_p)
+        jugador.billetera -= costo  
+        id_p, nombre_p = Tienda.pokemons_caja(tipo_de_caja) 
 
+        resultado_hilo = {"pokemon": None}
 
-            # --- CASO 1: Hay espacio libre en el equipo ---
-            if len(jugador.pokemons) < 6:
-                jugador.pokemons.append(nuevo_pokemon)
-                print(f"¡{nombre_p.upper()} se ha añadido a tu equipo! ({len(jugador.pokemons)}/6)")
-            
-            # --- CASO 2: El equipo está lleno (Mecánica de Reemplazo) ---
-            else:
-                mecanica = None
-                #meter mecanica de reemplazo
+        hilo_api = threading.Thread(
+            target=self._hilo_cargar_pokemon, 
+            args=(id_p, jugador, resultado_hilo)
+        )
+        hilo_api.start()
+
+        # Mientras el hilo trabaja de fondo, el hilo principal ejecuta la animación fluida
+        mostrar_animacion_caja(ventana, ruta_animacion, nombre_p)
+
+        hilo_api.join() 
+
+        nuevo_pokemon = resultado_hilo["pokemon"]
+
+        # Agregamos el pokémon al equipo del jugador
+        if nuevo_pokemon and len(jugador.pokemons) < 6:
+            jugador.pokemons.append(nuevo_pokemon)
+            print(f"¡{nombre_p.upper()} se ha añadido a tu equipo! ({len(jugador.pokemons)}/6)")
+        else:
+            pass
                 
     def consultar_saldo(self):
         print(f"Hola tu saldo es de: {self.billetera}")
 
     def comprar_objeto(self, jugador, nombre_objeto):
-            
-            costo = self.objetos_tienda[nombre_objeto]
-
-            if jugador.billetera >= costo:
-                jugador.billetera -= costo
-                jugador.inventario[nombre_objeto] += 1
-                print(f"Compraste {nombre_objeto.upper()}.")
-            else:
-                print("¡No tienes suficiente dinero!")
-
-
+        costo = self.objetos_tienda[nombre_objeto]
+        if jugador.billetera >= costo:
+            jugador.billetera -= costo
+            jugador.inventario[nombre_objeto] += 1
+            print(f"Compraste {nombre_objeto.upper()}.")
+        else:
+            print("¡No tienes suficiente dinero!")
