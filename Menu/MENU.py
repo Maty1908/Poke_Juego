@@ -1,4 +1,4 @@
-import pygame,os,sys
+import pygame, sys
 import estilo
 
 
