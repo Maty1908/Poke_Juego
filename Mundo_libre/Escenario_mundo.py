@@ -1,68 +1,92 @@
-import pygame,os
-pygame.init()   #se pone esto primero ya que al importar las funciones con los escenarios
-#              tiene que estar iniciado
-from Menu.MENU import menu_inicial
-from Sonido.Funcion_audio import reproducir_musica
-import Personaje
+import pygame, sys, os
 import estilo
 
-ventana = pygame.display.set_mode((1064, 704))
-estado = "MENU"
-reproducir_musica("menu.mp3",bucle=True)
-profe_elegido = None
-ejecutar = True
+def escenario_mundo(ventana,jugador):
 
-while ejecutar:
+    reloj = pygame.time.Clock()
+
+    imagen_fondo = pygame.image.load(os.path.join("img/Mapa_mundo/Mundo.png")).convert() 
+    imagen_fondo = pygame.transform.scale(imagen_fondo, (estilo.ANCHO_VENTANA, estilo.ALTO_VENTANA))
+
+    arbol = pygame.image.load(os.path.join("img/Mapa_mundo/arbol1.png")).convert_alpha()
+    posiciones_arboles = [
+        (372, 667), (296, 667), (223, 667), (148, 667),  (77, 667), (8, 667),
+        (651, 667), (763, 454), (955, 453), (794, 259), (870, 259),
+    ]
+
+    farol = pygame.image.load(os.path.join("img/Mapa_mundo/farol.png")).convert_alpha()
+    posiciones_faroles = [
+        (322, 327), (619, 236), (729, 340), (580, 546), (469, 546)
+    ]
+
+
+    maceta = pygame.image.load(os.path.join("img/Mapa_mundo/maceta.png")).convert_alpha()
+    posiciones_macetas = [
+        (350, 577), (609, 577)
+    ]
+
+    shop = pygame.image.load(os.path.join("img/Mapa_mundo/shop.png")).convert_alpha()
+    respaldo1 = pygame.image.load(os.path.join("img/Mapa_mundo/respaldo1.png")).convert_alpha()
+    respaldo2 = pygame.image.load(os.path.join("img/Mapa_mundo/respaldo2.png")).convert_alpha()
     
-    if estado == "MENU":
-        eleccion_menu = menu_inicial(ventana,profe_elegido)
-        estado = eleccion_menu
-        
-    elif estado == "SELECCION":
-        from Seleccion.seleccion_personaje import menu_seleccion
-        from TIENDA.tienda import Tienda
-        import Personaje
-        
-        profe_elegido = menu_seleccion(ventana)
-        jugador = Personaje.personaje(os.path.join(estilo.DIRECTORIO_BASE, f"img/skins/{profe_elegido}/OV.png")) #creamos al jugador
-        tienda = Tienda() #creamos a la tienda
-        
-        pygame.mixer.music.stop()
-        reproducir_musica("mundo.mp3",bucle=True)
-        estado = "MUNDO_LIBRE"
-        
-    elif estado == "MUNDO_LIBRE":
-        from Mundo_libre.Escenario_mundo import escenario_mundo
-        
-        accion_jugador = escenario_mundo(ventana,jugador)
-        estado = accion_jugador
-        
-    elif estado == "TIENDA":
-        from TIENDA.escenario_tienda import escenario_tienda # <--- Acá
-        from TIENDA.mostrador import mostrador
-        
-        pygame.mixer.music.stop()
-        reproducir_musica("tienda.mp3",bucle=True)
-        accion_jugador = escenario_tienda(ventana,jugador)
-        
-        if accion_jugador == "SALIR":
-            pygame.mixer.music.stop()
-            reproducir_musica("mundo.mp3",bucle=True)
-            estado = "MUNDO_LIBRE"
+    barril = pygame.image.load(os.path.join("img/Mapa_mundo/barril.png")).convert_alpha()
+    posiciones_barril = [
+        (287, 537), (723, 564)
+    ]
+    
+    NPC_bosque = pygame.image.load(os.path.join("img/Mapa_mundo/NPC_bosque.png")).convert_alpha()
+    NPC_bosque = pygame.transform.scale(NPC_bosque, (estilo.ANCHO_PERSONAJE, estilo.ALTO_PERSONAJE))
+    
+    fuente = pygame.image.load(os.path.join("img/Mapa_mundo/fuente.png")).convert_alpha()
+    
+    jugador.forma.center = (135,625)    #spawn del jugador
+
+
+    ejecutar = True 
+    while ejecutar:
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT:
+                sys.exit()
+
+                    
+        teclas = pygame.key.get_pressed()
             
-        elif accion_jugador == "COMPRAR":
-            estado = mostrador(ventana,jugador,tienda)
+        delta_x = (teclas[pygame.K_RIGHT] - teclas[pygame.K_LEFT]) * estilo.VELOCIDAD_MUNDO_LIBRE
+        delta_y = (teclas[pygame.K_DOWN] - teclas[pygame.K_UP]) * estilo.VELOCIDAD_MUNDO_LIBRE
+
+
+        
+        limites_totales = estilo.LIMITES_MUNDO_LIBRE
+        jugador.movimiento(delta_x, delta_y, limites_totales)
+
+        accion = jugador.interactuar(teclas)
+        if accion is not None:
+            accion_retorno = accion
+            ejecutar = False # Rompemos el bucle para volver al index.py con el nuevo estado
             
-    elif estado == "PELEANDO":
-            from Peleas.sprite_combate import batalla
             
-            pygame.mixer.music.stop()
-            reproducir_musica("pelea.mp3", bucle=True) 
-            
-            accion_retorno = batalla(ventana, jugador)
-            
-            pygame.mixer.music.stop()
-            reproducir_musica("mundo.mp3", bucle=True)
-            
-            estado = accion_retorno
-pygame.quit()
+        ventana.blit(imagen_fondo, (0, 0)) 
+        jugador.dibujar(ventana)
+
+        for pos in posiciones_arboles:
+            ventana.blit(arbol, pos)
+        
+        for pos in posiciones_faroles:
+            ventana.blit(farol, pos)
+
+        ventana.blit(shop,(1, 446))
+
+        for pos in posiciones_macetas:
+            ventana.blit(maceta, pos)
+
+        ventana.blit(respaldo1, (320, 473))
+        ventana.blit(respaldo2, (726, 472))
+        ventana.blit(NPC_bosque, (860, 465))
+        ventana.blit(fuente,(457, 373))
+
+        for pos in posiciones_barril:
+            ventana.blit(barril,pos)
+        
+        reloj.tick(estilo.FPS)
+        pygame.display.flip()
+    return accion_retorno
