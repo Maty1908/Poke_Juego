@@ -77,6 +77,9 @@ LIMITES_TIENDA = {
     (100, 575, 95, 25), (75, 400, 25, 190), (100, 375, 30, 25),
     (130, 350, 30, 25)
 }
+FUENTE_SALDO = pygame.font.Font("tipografia/pokemon_font.ttf", 18)
+ANCHO_CARTEL = 237
+ALTO_CARTEL = 59
 
 LIMITES_MUNDO_LIBRE = {
     (1, 470, 278, 117), (170, 545, 145, 65), (245, 565, 95, 15), (20, 605, 55, 5),
@@ -99,8 +102,7 @@ SALIDA_TIENDA = {(530,668,25,30)}
 ALTO_PERSONAJE = 53
 ANCHO_PERSONAJE = 42
 
-INFO_OBJ = []  #meter cuadros para saber que es cada cosa
- 
+INFO_OBJ = []  #meter cuadros para saber que es cada cosa=
 HITBOX_OBJ = [#                            x , y, ancho, alto
     {"nombre":"normal","rect": pygame.Rect(447, 219, 125, 43)},
     {"nombre":"especial","rect": pygame.Rect(587, 219, 125, 43)},
@@ -112,11 +114,6 @@ HITBOX_OBJ = [#                            x , y, ancho, alto
     {"nombre":"revivir","rect": pygame.Rect(700, 464, 125, 43)}
     
     ]
-
-
-    
-
-
 #                 x , y, ancho, alto
 NPC_MUNDO_LIBRE ={(134,179,41,25),(725,175,53,25),(862,463,69,69)}   #npc muelle, cueva y bosque
 ENTRADA_TIENDA = {(107,614,53,22)}
