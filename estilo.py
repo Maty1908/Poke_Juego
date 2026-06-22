@@ -22,18 +22,16 @@ COLOR_TEXTO = (60, 60, 60)
 COLOR_BORDE = (60, 60, 60)
 COLOR_PANEL = (245, 245, 245)
 COLOR_FONDO_TOOLTIP = (30, 30, 30, 230)
+
 # --- AJUSTE DE BOTONES ---
-# Definimos los espacios de trabajo en el panel
 y_fila1 = ALTO_COMBATE + 15
 y_fila2 = ALTO_COMBATE + 65
-ancho_total = 400 # Manteniendo el ancho que ya tenías definido
+ancho_total = 400 
 x_inicio = 600
 
 DATOS_BOTONES = {
-    # Botón grande arriba
     "Atacar":   (pygame.Rect(x_inicio, y_fila1, ancho_total, 40), (248, 112, 112)),
     
-    # Botones divididos abajo (el ancho total es 400, los dividimos con un pequeño gap)
     "Objetos":  (pygame.Rect(x_inicio, y_fila2, 195, 40), (120, 200, 80)),
     "Cambiar":  (pygame.Rect(x_inicio + 205, y_fila2, 195, 40), (100, 149, 237))
 }
@@ -66,9 +64,6 @@ VELOCIDAD_MUNDO_LIBRE = 3
 COOLDOWN_ANIMACION = 150
 
 # --- COORDENADAS SPRITESHEET---
-
-#estos conjuntos significan (x,y,ancho,alto)
-
 COORDENADAS = {
     "abajo":     [(5, 4, 270, 380), (5, 392, 270, 380), (5, 782, 270, 380)],
     "arriba":    [(285, 4, 270, 380), (285, 392, 270, 380), (285, 782, 270, 380)],
@@ -104,34 +99,25 @@ LIMITES_MUNDO_LIBRE = {
     (139, 165, 33, 1), (730, 167, 10, 1), (863, 500, 30, 1)
 }
 
-#                 x , y, ancho, alto
-#NPC_MUNDO_LIBRE ={(139,170,25,30),(721,170,25,30),(866,480,25,30)}   #npc muelle, cueva y bosque
-#ENTRADA_TIENDA = {(117,613,25,30)}
-#SALIDA_TIENDA = {(530,668,25,30)}
+NPC_MUNDO_LIBRE ={(139,170,25,30),(721,170,25,30),(866,480,25,30)}   #npc muelle, cueva y bosque
+ENTRADA_TIENDA = {(117,613,25,30)}
+SALIDA_TIENDA = {(530,668,25,30)}
 ALTO_PERSONAJE = 53
 ANCHO_PERSONAJE = 42
+MOSTRADOR = {(142,385,250,10)} 
 
-INFO_OBJ = []  #meter cuadros para saber que es cada cosa=
-HITBOX_OBJ = [#                            x , y, ancho, alto
+INFO_OBJ = []  
+HITBOX_OBJ = [
     {"nombre":"normal","rect": pygame.Rect(447, 219, 125, 43)},
     {"nombre":"especial","rect": pygame.Rect(587, 219, 125, 43)},
     {"nombre":"rara","rect": pygame.Rect(723, 219, 125, 43)},
     {"nombre":"legendaria","rect": pygame.Rect(865, 219, 125, 43)},
     
-    #objetos
     {"nombre":"pocion","rect": pygame.Rect(531, 464, 125, 43)},
-    {"nombre":"revivir","rect": pygame.Rect(700, 464, 125, 43)}
-    
+    {"nombre":"revivir","rect": pygame.Rect(700, 464, 125, 43)}    
     ]
-#                 x , y, ancho, alto
-NPC_MUNDO_LIBRE ={(134,179,41,25),(725,175,53,25),(862,463,69,69)}   #npc muelle, cueva y bosque
-ENTRADA_TIENDA = {(107,614,53,22)}
-SALIDA_TIENDA = {(453,649,161,53)}
-MOSTRADOR = {(142,385,250,10)} #interaccion comprar
-
 
 #---------------------ARCHIVO_ESCENARIO_MUNDO----------------------
-
 posiciones_arboles = [(372, 667), (296, 667), (223, 667), (148, 667),  (77, 667), (8, 667),
     (651, 667), (763, 454), (955, 453), (794, 259), (870, 259),]
 
