@@ -18,8 +18,6 @@ def mostrador(ventana,jugador,tienda):
     ejecutar = True
     while ejecutar:
 
-        
-        #necesario para chequear las hitbox
         pos_mouse = pygame.mouse.get_pos()
 
         for evento in pygame.event.get():
@@ -32,7 +30,6 @@ def mostrador(ventana,jugador,tienda):
                     accion_retorno = "TIENDA"
                     ejecutar = False
 
-            #sistema de compra
             if evento.type == pygame.MOUSEBUTTONDOWN:
                 if evento.button == 1:
 
