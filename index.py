@@ -15,7 +15,7 @@ ejecutar = True
 while ejecutar:
     
     if estado == "MENU":
-        eleccion_menu = menu_inicial(ventana,profe_elegido)
+        eleccion_menu = menu_inicial(ventana)
         estado = eleccion_menu
         
     elif estado == "SELECCION":
