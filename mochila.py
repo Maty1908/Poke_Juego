@@ -1,7 +1,6 @@
 import pygame
 import estilo
 
-
 blanco = (255,255,255)
 
 def inicializar_menu():
@@ -14,8 +13,6 @@ def inicializar_menu():
     }
 
 def dibujar_menu(ventana, jugador, menu):
-  
-    # Si el menu no esta abierto, no dibujamos nada
     if not menu["abierto"]:
         return
 
@@ -23,7 +20,6 @@ def dibujar_menu(ventana, jugador, menu):
     ancho_menu = 250
     x_menu = estilo.ANCHO_VENTANA - ancho_menu
     
-    # Fondo del menu
     rect_menu = pygame.Rect(x_menu, 0, ancho_menu, estilo.ALTO_VENTANA)
     pygame.draw.rect(ventana, (30, 30, 30), rect_menu)
     pygame.draw.rect(ventana, blanco, rect_menu, 4)
@@ -38,7 +34,6 @@ def dibujar_menu(ventana, jugador, menu):
 
         opciones = ["1. POKEMONS", "2. OBJETOS","3. GUARDAR"]
 
-        #muestra opciones y si coincide el indice lo resalta en amarillo
         for i, opc in enumerate(opciones):
             color = (255, 215, 0) if i == menu["indice_seleccionado"] else blanco
             txt_opc = fuente_menu.render(opc, True, color)
