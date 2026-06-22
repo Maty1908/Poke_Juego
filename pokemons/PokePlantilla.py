@@ -5,7 +5,6 @@ from pokemons.Extraer_tipos import Extraer_tabla_tipos
 Tabla_completa = Extraer_tabla_tipos()
 
 class Pokemon:
-    # Agregamos es_jugador para decidir qué sprite descargar al instanciarlo
     def __init__(self, id, es_jugador=True):
         url = f"https://pokeapi.co/api/v2/pokemon/{(id)}"
         res = requests.get(url).json()
@@ -22,15 +21,13 @@ class Pokemon:
         self.vida_actual = self.stats["vida_max"]
         self.tipos = [t["type"]["name"] for t in res["types"]]
         
-        # --- DESCARGA DEL GIF BASADO EN EL ROL ---
         vista = "back_default" if es_jugador else "front_default"
         try:
             url_gif = res["sprites"]["versions"]["generation-v"]["black-white"]["animated"][vista]
             self.gif_bytes = requests.get(url_gif).content
         except:
             self.gif_bytes = None
-        # -----------------------------------------
-        
+        # -----------------------------------------        
         self.ataques = []
         moves = res["moves"][:4]  
         
