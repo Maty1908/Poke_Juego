@@ -5,7 +5,6 @@ from pokemons.PokePlantilla import Pokemon
 
 class Tienda():   
 
-    #clasificacion de pokemons por rareza (inventada por nosotros)
     POKEDEX = {
         "normal": {
             16: "Pidgey", 17: "Pidgeotto", 19: "Rattata", 20: "Raticate", 21: "Spearow", 22: "Fearow",
@@ -47,19 +46,15 @@ class Tienda():
 
     #---------------------------INICIADOR---------------------------------
     def __init__(self):
-        self.cajas = {"normal": 50, "especial": 75, "rara": 125, "legendaria": 250} #cajas y precios
-        self.objetos_tienda = {"pocion": 30, "revivir": 50} #objetos a vender
+        self.cajas = {"normal": 50, "especial": 75, "rara": 125, "legendaria": 250}
+        self.objetos_tienda = {"pocion": 30, "revivir": 50} 
 
     #-----------------METODOS------------------------------------
     @staticmethod
     def pokemons_caja(tipo_caja):
         id_aleatorio = random.choice(list(Tienda.POKEDEX[tipo_caja].keys()))
         return id_aleatorio, Tienda.POKEDEX[tipo_caja][id_aleatorio]    
-        # Elige una ID al azar de las llaves del tipo de caja y devuelve (ID, Nombre)
-        #.keys() devuelve los ID de pokemones en la categoria seleccionada
-        #Y antes metemos un list() asi podemos usar la funcion random.choice
-        #que elige un elemento al azar de una LISTA
-
+        
     def abrir_caja(self, jugador, tipo_de_caja,ventana):
     
             costo = self.cajas[tipo_de_caja]
@@ -71,31 +66,25 @@ class Tienda():
 
             rutas_cajas = {
             "normal": "img/Cajas_Frames/Poke_U.png",      
-            "especial": "img/Cajas_Frames/Poke_R.png",  #CORREGIR SPRITES 
+            "especial": "img/Cajas_Frames/Poke_R.png",  
             "rara": "img/Cajas_Frames/Poke_M.png",        
             "legendaria": "img/Cajas_Frames/Poke_N.png"}
 
             ruta_animacion = rutas_cajas.get(tipo_de_caja, "img/Cajas_Frames/Poke_N.jpg")
 
             jugador.billetera -= costo  
-            id_p, nombre_p = Tienda.pokemons_caja(tipo_de_caja) #guardamos ID y nombre del pokemon
+            id_p, nombre_p = Tienda.pokemons_caja(tipo_de_caja) 
             nombre_poke = nombre_p
-            nuevo_pokemon = Pokemon(id_p)   #instanciamos el objeto pokemon
+            nuevo_pokemon = Pokemon(id_p)   
             
-           
-            # Bloquea el flujo, muestra los frames de la caja seleccionada y espera el ENTER
             mostrar_animacion_caja(ventana, ruta_animacion,nombre_p)
 
-
-            # --- CASO 1: Hay espacio libre en el equipo ---
             if len(jugador.pokemons) < 6:
                 jugador.pokemons.append(nuevo_pokemon)
                 print(f"¡{nombre_p.upper()} se ha añadido a tu equipo! ({len(jugador.pokemons)}/6)")
             
-            # --- CASO 2: El equipo está lleno (Mecánica de Reemplazo) ---
             else:
                 mecanica = None
-                #meter mecanica de reemplazo
                 
     def consultar_saldo(self):
         print(f"Hola tu saldo es de: {self.billetera}")
