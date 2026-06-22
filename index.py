@@ -35,8 +35,8 @@ while ejecutar:
         jugador_cargado = cargar_partida(ruta_defecto)
         
         if jugador_cargado is not None:
-            jugador = jugador_cargado #cargamos al jugador
-            tienda = Tienda()         #creamos la tienda
+            jugador = jugador_cargado 
+            tienda = Tienda()        
             
             pygame.mixer.music.stop()
             reproducir_musica("mundo.mp3", bucle=True)
@@ -50,8 +50,8 @@ while ejecutar:
     elif estado == "SELECCION":
 
         profe_elegido = menu_seleccion(ventana)
-        jugador = Personaje.personaje(os.path.join(estilo.DIRECTORIO_BASE, f"img/skins/{profe_elegido}/OV.png")) #creamos al jugador
-        tienda = Tienda() #creamos a la tienda
+        jugador = Personaje.personaje(os.path.join(estilo.DIRECTORIO_BASE, f"img/skins/{profe_elegido}/OV.png")) 
+        tienda = Tienda() 
         
         pygame.mixer.music.stop()
         reproducir_musica("mundo.mp3",bucle=True)
