@@ -11,14 +11,12 @@ def batalla(ventana, jugador):
         print("[ERROR] El jugador no tiene Pokemon en su inventario para combatir.")
         return
 
-    # Seleccionamos el primer Pokemon del jugador que tenga vida disponible
     mi_pokemon = next((p for p in jugador.pokemons if p.vida_actual > 0), jugador.pokemons[0])
     
     
     cantidad_rival = len(jugador.pokemons)
     equipo_rival = generar_equipo_rival(cantidad_rival)
     
-    # Indice para saber que pokemon del rival esta activo actualmente
     idx_rival_activo = 0
     pokemon_rival = equipo_rival[idx_rival_activo]
 
@@ -30,7 +28,6 @@ def batalla(ventana, jugador):
 
     pos_mia, pos_rival, tam_base = estilo.escenario_actual
 
-    # Procesamos los frames directamente usando el atributo .gif_bytes de cada objeto
     frames = {
         "mio": procesar_gif(mi_pokemon.gif_bytes, factor_escala=3.0),
         "rival": procesar_gif(pokemon_rival.gif_bytes, factor_escala=2.2)
@@ -62,7 +59,6 @@ def batalla(ventana, jugador):
     ejecutando = True
     batalla_terminada = False
     
-    # Variables de control de turnos
     TURNO_RIVAL_PENDIENTE = False
 
     #----------------------BUCLE BATALLA------------------------------
@@ -79,7 +75,6 @@ def batalla(ventana, jugador):
                     ejecutando = False
                     break
                 
-                # FASE INTERMEDIA: Al hacer un clic pendiente, ataca el rival
                 if TURNO_RIVAL_PENDIENTE:
                     idx_ataque_rival = random.randint(0, len(pokemon_rival.ataques) - 1)
                     res_rival = procesar_turno_logico(pokemon_rival, mi_pokemon, idx_ataque_rival)
@@ -88,7 +83,6 @@ def batalla(ventana, jugador):
                     TURNO_RIVAL_PENDIENTE = False 
                     
                     if res_rival["debilitado"]:
-                        # Verificamos si al jugador le queda algun otro Pokemon vivo en su lista
                         pokemon_vivo = next((p for p in jugador.pokemons if p.vida_actual > 0), None)
                         if pokemon_vivo is None:
                             texto_pantalla = f"{nombre_mio} se debilito! No te quedan Pokemon... Perdiste el combate. (Clic para salir)"
@@ -96,7 +90,6 @@ def batalla(ventana, jugador):
                             batalla_terminada = True
                         else:
                             texto_pantalla = f"{nombre_mio} se debilito! Elige otro Pokemon usando el boton Cambiar."
-                            # Forzamos a que el jugador tenga que entrar a cambiar de pokemon
                             MENU_ACTUAL = "PRINCIPAL"
                     continue
 
@@ -134,21 +127,17 @@ def batalla(ventana, jugador):
                                     res_jugador = procesar_turno_logico(mi_pokemon, pokemon_rival, idx_ataque)
                                     
                                     if res_jugador["debilitado"]:
-                                        # ¡Derrotamos al rival activo! Evaluamos si tiene mas en su equipo
-                                        idx_rival_activo += 1
+ç                                        idx_rival_activo += 1
                                         if idx_rival_activo < len(equipo_rival):
-                                            # Traemos al siguiente contrincante
                                             pokemon_rival = equipo_rival[idx_rival_activo]
                                             nombre_rival = pokemon_rival.nombre
                                             
-                                            # Cargamos los nuevos sprites/frames del rival entrante
                                             frames["rival"] = procesar_gif(pokemon_rival.gif_bytes, factor_escala=2.2)
                                             idx["rival"] = 0
                                             
                                             texto_pantalla = f"{nombre_mio} uso {res_jugador['nombre_ataque']}! El enemigo se debilito. ¡El rival envia a {nombre_rival}! (Clic para continuar)"
                                             TURNO_RIVAL_PENDIENTE = True
                                         else:
-                                            # Si ya no quedan mas rivales en su lista, ganamos del todo
                                             texto_pantalla = f"{nombre_mio} uso {res_jugador['nombre_ataque']}! Derrotaste a todo el equipo rival! (Clic para salir)"
                                             aplicar_consecuencias_billetera(jugador, gano_jugador=True)
                                             batalla_terminada = True
@@ -179,21 +168,18 @@ def batalla(ventana, jugador):
                                 MENU_ACTUAL = "PRINCIPAL"
                             break 
                             
-        # Animacion de frames de los GIFs
         if pygame.time.get_ticks() - ultimo_cambio > 90:
             for k in idx: 
                 if k == "rival" and batalla_terminada: continue
                 idx[k] = (idx[k] + 1) % len(frames[k])
             ultimo_cambio = pygame.time.get_ticks()
 
-        # Render de fondo y sprites
         ventana.blit(fondo_combate, (0, 0))
         for k, (x_din, suelo) in [("mio", pos_mia), ("rival", pos_rival)]:
             if k == "rival" and batalla_terminada: pass
             fr = frames[k][idx[k]]
             ventana.blit(fr, (x_din - (fr.get_width() // 2), suelo - fr.get_height()))
 
-        # Render de panel de control inferior e informacion de HP
         pygame.draw.rect(ventana, estilo.COLOR_PANEL, (0, estilo.ALTO_COMBATE, estilo.ANCHO_VENTANA, estilo.ALTO_PANEL))
         
         info_vida = f"HP: {mi_pokemon.vida_actual}/{mi_pokemon.stats['vida_max']} vs Rival ({idx_rival_activo + 1}/{len(equipo_rival)}): {pokemon_rival.vida_actual}/{pokemon_rival.stats['vida_max']}"
@@ -204,7 +190,6 @@ def batalla(ventana, jugador):
         txt_linea2 = fuente_texto_panel.render(info_vida, True, (248, 112, 112))
         ventana.blit(txt_linea2, (30, estilo.ALTO_COMBATE + 72))
 
-        # Dibujamos botones interactivos si corresponde
         if not batalla_terminada and not TURNO_RIVAL_PENDIENTE:
             if MENU_ACTUAL == "PRINCIPAL":
                 botones_a_dibujar = botones
