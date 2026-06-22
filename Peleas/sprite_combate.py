@@ -1,18 +1,14 @@
-
 import pygame,os,random,io,sys
 import estilo  
 from funciones import procesar_gif,obtener_botones_segun_menu
-
-from funciones import procesar_turno_logico, generar_equipo_rival, aplicar_consecuencias_billetera
+from funciones import procesar_turno_logico, generar_equipo_rival, aplicar_consecuencias_billetera, usar_objeto_en_combate
 
 def batalla(ventana, jugador): 
-    
     if not hasattr(jugador, "pokemons") or not jugador.pokemons:
         print("[ERROR] El jugador no tiene Pokemon en su inventario para combatir.")
         return
 
     mi_pokemon = next((p for p in jugador.pokemons if p.vida_actual > 0), jugador.pokemons[0])
-    
     
     cantidad_rival = len(jugador.pokemons)
     equipo_rival = generar_equipo_rival(cantidad_rival)
@@ -24,7 +20,6 @@ def batalla(ventana, jugador):
     pygame.display.set_caption("Poke-Unsam - Batalla")
     reloj = pygame.time.Clock()
     fondo_combate = estilo.obtener_fondo_aleatorio()  
-
 
     pos_mia, pos_rival, tam_base = estilo.escenario_actual
 
@@ -49,8 +44,6 @@ def batalla(ventana, jugador):
         "Cambiar": "A que Pokemon quieres llamar?" 
     }
 
-    
-
     tamaño_achicado = estilo.fuente_nombre.get_height() - 8
     fuente_texto_panel = pygame.font.Font(os.path.join(estilo.DIRECTORIO_BASE, "tipografia/pokemon_font.ttf"), tamaño_achicado)
     
@@ -61,7 +54,6 @@ def batalla(ventana, jugador):
     
     TURNO_RIVAL_PENDIENTE = False
 
-    #----------------------BUCLE BATALLA------------------------------
     while ejecutando:
         mouse_pos = pygame.mouse.get_pos()
         
@@ -127,7 +119,7 @@ def batalla(ventana, jugador):
                                     res_jugador = procesar_turno_logico(mi_pokemon, pokemon_rival, idx_ataque)
                                     
                                     if res_jugador["debilitado"]:
-ç                                        idx_rival_activo += 1
+                                        idx_rival_activo += 1
                                         if idx_rival_activo < len(equipo_rival):
                                             pokemon_rival = equipo_rival[idx_rival_activo]
                                             nombre_rival = pokemon_rival.nombre
@@ -135,7 +127,7 @@ def batalla(ventana, jugador):
                                             frames["rival"] = procesar_gif(pokemon_rival.gif_bytes, factor_escala=2.2)
                                             idx["rival"] = 0
                                             
-                                            texto_pantalla = f"{nombre_mio} uso {res_jugador['nombre_ataque']}! El enemigo se debilito. ¡El rival envia a {nombre_rival}! (Clic para continuar)"
+                                            texto_pantalla = f"{nombre_mio} uso {res_jugador['nombre_ataque']}! El enemigo se debilito. El rival envia a {nombre_rival}! (Clic para continuar)"
                                             TURNO_RIVAL_PENDIENTE = True
                                         else:
                                             texto_pantalla = f"{nombre_mio} uso {res_jugador['nombre_ataque']}! Derrotaste a todo el equipo rival! (Clic para salir)"
@@ -144,6 +136,18 @@ def batalla(ventana, jugador):
                                     else:
                                         texto_pantalla = f"{nombre_mio} uso {res_jugador['nombre_ataque']}! Hizo {res_jugador['daño']} de daño. (Clic para continuar)"
                                         TURNO_RIVAL_PENDIENTE = True
+                                        
+                                elif nom in ["Pocion", "Revivir"]:
+                                    tipo_item = nom.lower()
+                                    resultado_item = usar_objeto_en_combate(jugador, mi_pokemon, tipo_item)
+                                    
+                                    if resultado_item["exito"]:
+                                        texto_pantalla = f"{resultado_item['mensaje']} (Clic para continuar)"
+                                        TURNO_RIVAL_PENDIENTE = True
+                                    else:
+                                        texto_pantalla = resultado_item["mensaje"]
+                                        MENU_ACTUAL = "PRINCIPAL"
+                                        continue
                                         
                                 elif "Pkm_" in nom:
                                     idx_elegido = int(nom.split("_")[1])
