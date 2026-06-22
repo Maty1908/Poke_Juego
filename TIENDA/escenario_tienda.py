@@ -16,7 +16,7 @@ def escenario_tienda(ventana,jugador):
     reloj = pygame.time.Clock()
 
     jugador.cargar_sprites(jugador.escalas_mapas["tienda"])
-    jugador.forma.center = (532, 640)   #spawn inicial del jugador
+    jugador.forma.center = (532, 640)
 
     menu_jugador = mochila.inicializar_menu()
     
@@ -55,33 +55,27 @@ def escenario_tienda(ventana,jugador):
                         elif evento.key == pygame.K_x:  
                             menu_jugador["abierto"] = False
                 
-                    # ---> AQUÍ SE INTEGRAN LAS SUBSECCIONES <---
                     else:
-                        # Si estás específicamente viendo a tus criaturas
                         if menu_jugador["seccion"] == "POKEMONS":
                             cant_pokes = len(jugador.pokemons)
                             
                             if cant_pokes > 0:
-                                # Teclas de dirección para desplazarse por la lista
                                 if evento.key == pygame.K_UP:
                                     menu_jugador["indice_seleccionado"] = (menu_jugador["indice_seleccionado"] - 1) % cant_pokes
                                 elif evento.key == pygame.K_DOWN:
                                     menu_jugador["indice_seleccionado"] = (menu_jugador["indice_seleccionado"] + 1) % cant_pokes
                                 
-                                # Si presionás la 'D', se borra el seleccionado
                                 elif evento.key == pygame.K_d:
                                     idx = menu_jugador["indice_seleccionado"]
                                     if 0 <= idx < len(jugador.pokemons):
                                         print(f"Liberando a: {jugador.pokemons[idx].nombre}")
-                                        jugador.pokemons.pop(idx) # Quita el objeto de tu lista
+                                        jugador.pokemons.pop(idx)
                                         
-                                        # Ajustes de seguridad en el índice por si borrás el último
                                         if menu_jugador["indice_seleccionado"] >= len(jugador.pokemons) and len(jugador.pokemons) > 0:
                                             menu_jugador["indice_seleccionado"] = len(jugador.pokemons) - 1
                                         elif len(jugador.pokemons) == 0:
                                             menu_jugador["indice_seleccionado"] = 0
 
-                        # Tecla universal para volver atrás
                         if evento.key == pygame.K_x:  
                             menu_jugador["seccion"] = "PRINCIPAL"
                             menu_jugador["indice_seleccionado"] = 0
@@ -93,10 +87,9 @@ def escenario_tienda(ventana,jugador):
             delta_y = (teclas[pygame.K_DOWN] - teclas[pygame.K_UP]) * estilo.VELOCIDAD_TIENDA
     
     
-            # La clase se encarga de mover y setear la animación correcta
             jugador.movimiento(delta_x, delta_y,estilo.LIMITES_TIENDA)
             ventana.blit(imagen_fondo, (0, 0)) 
-            jugador.dibujar(ventana) #posicion del jugador
+            jugador.dibujar(ventana)
     
             #---------------------SALIR DE LA TIENDA Y COMPRAR-----------------------------
             accion = jugador.interactuar(teclas)
@@ -111,9 +104,9 @@ def escenario_tienda(ventana,jugador):
         ventana.blit(imagen_mueble1, (681, 423))
         ventana.blit(imagen_mueble1, (871, 423))
         
-        pygame.draw.rect(ventana, (0, 0, 0), (824, -1, 241, 63), border_radius=6)       # 🟢 NUEVO: Borde exterior Negro (+2px)
-        pygame.draw.rect(ventana, (194, 159, 130), (826, 1, 237, 59), border_radius=5) # Borde marrón
-        pygame.draw.rect(ventana, (53, 59, 83), (829, 4, 231, 53), border_radius=4)   # Fondo azul
+        pygame.draw.rect(ventana, (0, 0, 0), (824, -1, 241, 63), border_radius=6)       
+        pygame.draw.rect(ventana, (194, 159, 130), (826, 1, 237, 59), border_radius=5) 
+        pygame.draw.rect(ventana, (53, 59, 83), (829, 4, 231, 53), border_radius=4)   
         texto_billetera = estilo.FUENTE_SALDO.render(f"Saldo: {jugador.billetera}", True, (255, 255, 255))
         ventana.blit(texto_billetera, (826 + (237 - texto_billetera.get_width()) // 2, 1 + (59 - texto_billetera.get_height()) // 2))
 
