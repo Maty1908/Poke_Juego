@@ -24,8 +24,8 @@ def menu_inicial(ventana):
     # SOLO para el título
     fuente_titulo = pygame.font.Font(RUTA_FUENTE,97)
 
-    # Para Juego, Tienda y Gracias
-    fuente_ventanas = pygame.font.Font(RUTA_FUENTE,24)
+    # Para  partida guardada y Gracias
+    fuente_ventanas = pygame.font.Font(RUTA_FUENTE,13)
 
     # ---------------- ESTADO ACTUAL ----------------
     estado = "MENU"
@@ -49,32 +49,33 @@ def menu_inicial(ventana):
 
             # Click del mouse
             if evento.type == pygame.MOUSEBUTTONDOWN:
+                if evento.button == 1: 
+                    if estado == "MENU":
 
-                if estado == "MENU":
+                        x_mouse, y_mouse = pygame.mouse.get_pos()
 
-                    x_mouse, y_mouse = pygame.mouse.get_pos()
+                        for i, boton in enumerate(botones):
 
-                    for i, boton in enumerate(botones):
+                            if boton.collidepoint(x_mouse, y_mouse):
 
-                        if boton.collidepoint(x_mouse, y_mouse):
+                                if opciones[i] == "Comenzar Juego":
+                                    estado = "SELECCION"
+                                    return estado
 
-                            if opciones[i] == "Comenzar Juego":
-                                estado = "SELECCION"
-                                return estado
+                                elif opciones[i] == "Continuar Partida":
+                                    if os.path.exists("partida.json"): 
+                                        estado = "CONTINUAR"
+                                        return estado 
+                                    else:
+                                        estado = "SIN_PARTIDA"
 
-                            elif opciones[i] == "Continuar Partida":
-                                if gestor_datos.cargar_partida():
-                                    return "CONTINUAR"
-                                else:
-                                    print("No hay ninguna partida guardada.")
+                                elif opciones[i] == "Gracias":
+                                    estado = "GRACIAS"
+                                    
 
-                            elif opciones[i] == "Gracias":
-                                estado = "GRACIAS"
-                                return estado
-
-                            elif opciones[i] == "Salir":
-                                pygame.quit()
-                                sys.exit()
+                                elif opciones[i] == "Salir":
+                                    pygame.quit()
+                                    sys.exit()
 
             # ESC para volver al menú
             if evento.type == pygame.KEYDOWN:
@@ -130,33 +131,22 @@ def menu_inicial(ventana):
 
                 botones.append(rect)
 
-        # ---------------- JUEGO ----------------
-        elif estado == "juego":
-
-            ventana.fill((0, 0, 0))
-
-            texto = fuente_ventanas.render("Aca debera estar: Juego",True,(255, 255, 255))
-
-            ventana.blit(texto,(estilo.ANCHO_VENTANA // 2 - texto.get_width() // 2,estilo.ALTO_VENTANA // 2 - texto.get_height() // 2))
-
-        # ---------------- CONTINUAR ----------------
-        elif estado == "continuar":
-            
-            datos = gestor_datos.cargar_partida()
-            ventana.fill((0, 0, 0))
-
-            texto = fuente_ventanas.render("Aca debera estar: Continuar",True,(255, 255, 255))
-
-            ventana.blit(texto,(estilo.ANCHO_VENTANA // 2 - texto.get_width() // 2,estilo.ALTO_VENTANA // 2 - texto.get_height() // 2))
-
         # ---------------- GRACIAS ----------------
-        elif estado == "gracias":
+        elif estado == "GRACIAS":
 
             ventana.fill((30, 30, 30))
 
             texto = fuente_ventanas.render("¡Muchas gracias profes por este cuatrimestre, espero que disfruten el juego!",True,(255, 255, 255))
 
             ventana.blit(texto,(estilo.ANCHO_VENTANA // 2 - texto.get_width() // 2,estilo.ALTO_VENTANA // 2 - texto.get_height() // 2))
+
+        elif estado == "SIN_PARTIDA":
+            ventana.fill((30, 30, 30))
+
+            texto = fuente_ventanas.render("NO TIENES PARTIDAS GUARDADAS!",True,(255, 255, 255))
+
+            ventana.blit(texto,(estilo.ANCHO_VENTANA // 2 - texto.get_width() // 2,estilo.ALTO_VENTANA // 2 - texto.get_height() // 2))
+
 
         pygame.display.update()
         reloj.tick(60)
