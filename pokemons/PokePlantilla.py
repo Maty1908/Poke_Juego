@@ -69,7 +69,7 @@ class Pokemon:
                     multiplicador *= 0
                 elif tipo_ataque in Tabla_completa[mi_tipo]["Daño_mitad"]:
                     multiplicador *= 0.5
-                elif tipo_ataque in Tabla_completa[mi_tipo]["Daño_Doble"]:
+                elif tipo_ataque in  Tabla_completa[mi_tipo]["Daño_Doble"]:
                     multiplicador *= 2.0
                     
         daño_mitigado = daño_base / (1 + (self.stats["defensa"] / 100))
