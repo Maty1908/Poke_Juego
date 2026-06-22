@@ -89,5 +89,5 @@ def menu_inicial(ventana):
             texto = fuente_ventanas.render("NO TIENES PARTIDAS GUARDADAS!",True,(255, 255, 255))
             ventana.blit(texto,(estilo.ANCHO_VENTANA // 2 - texto.get_width() // 2,estilo.ALTO_VENTANA // 2 - texto.get_height() // 2))
 
-        pygame.display.update(
+        pygame.display.update()
         reloj.tick(60)
