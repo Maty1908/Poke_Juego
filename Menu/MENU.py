@@ -2,7 +2,7 @@ import pygame, sys
 import estilo
 
 
-def menu_inicial(ventana,personaje_elegido):
+def menu_inicial(ventana):
 
     pygame.display.set_caption("Poke-Unsam - Menu")
 
