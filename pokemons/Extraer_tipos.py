@@ -3,13 +3,13 @@ import requests
 
 Tipos_Gen3 = ["normal", "fire", "water", "electric", "grass", "ice",
         "fighting", "poison", "ground", "flying", "psychic",
-        "bug", "rock", "ghost", "dragon", "steel", "dark"]      #iterable
+        "bug", "rock", "ghost", "dragon", "steel", "dark"] 
 
 
 
 def Extraer_tabla_tipos():
 
-    Tabla_de_tipos = {}    # diccionario con todos los tipos
+    Tabla_de_tipos = {}
 
 
     for tipo in Tipos_Gen3:
@@ -17,7 +17,7 @@ def Extraer_tabla_tipos():
         Tabla_de_tipos[tipo] = {
             "Daño_Doble" :{},
             "Daño_mitad":{},
-            "Inmune":{} }      #variable local para agregar a "Tabla_de_tipos"
+            "Inmune":{} }
 
 
         try:
@@ -28,8 +28,6 @@ def Extraer_tabla_tipos():
             if respuesta.status_code == 200:
                 json = respuesta.json()
                 relaciones_daños = json["damage_relations"]
-
-                #INMUNIDADES
             
                 for t in relaciones_daños["no_damage_from"]:
                     Nombre_tipo = t["name"]
@@ -37,18 +35,13 @@ def Extraer_tabla_tipos():
                     if Nombre_tipo in Tipos_Gen3:
                         Tabla_de_tipos[tipo]["Inmune"][Nombre_tipo] = 0
 
-
-                #RESISTENCIAS
-
                 for t in relaciones_daños["half_damage_from"]:
                     Nombre_tipo = t["name"]
 
                     if Nombre_tipo in Tipos_Gen3:
                         Tabla_de_tipos[tipo]["Daño_mitad"][Nombre_tipo] = 0.5
 
-
-                #DAÑO DOBLE
-
+                    
                 for t in relaciones_daños["double_damage_from"]:
                     Nombre_tipo = t["name"]
 
@@ -62,8 +55,6 @@ def Extraer_tabla_tipos():
             
             elif respuesta.status_code == 500:
                 print("Error en el servidor")
-
-
 
         except requests.exceptions.RequestException: 
             print(f"Error en el tipo: {tipo}")
