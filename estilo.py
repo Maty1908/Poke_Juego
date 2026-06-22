@@ -22,11 +22,20 @@ COLOR_TEXTO = (60, 60, 60)
 COLOR_BORDE = (60, 60, 60)
 COLOR_PANEL = (245, 245, 245)
 COLOR_FONDO_TOOLTIP = (30, 30, 30, 230)
+# --- AJUSTE DE BOTONES ---
+# Definimos los espacios de trabajo en el panel
+y_fila1 = ALTO_COMBATE + 15
+y_fila2 = ALTO_COMBATE + 65
+ancho_total = 400 # Manteniendo el ancho que ya tenías definido
+x_inicio = 600
 
-# Botones: [Rect, Color]
 DATOS_BOTONES = {
-    "Atacar":    (pygame.Rect(600, ALTO_COMBATE + 15, 400, 40), (248, 112, 112)),
-    "Objetos":  (pygame.Rect(600, ALTO_COMBATE + 65, 400, 40), (120, 200, 80)),
+    # Botón grande arriba
+    "Atacar":   (pygame.Rect(x_inicio, y_fila1, ancho_total, 40), (248, 112, 112)),
+    
+    # Botones divididos abajo (el ancho total es 400, los dividimos con un pequeño gap)
+    "Objetos":  (pygame.Rect(x_inicio, y_fila2, 195, 40), (120, 200, 80)),
+    "Cambiar":  (pygame.Rect(x_inicio + 205, y_fila2, 195, 40), (100, 149, 237))
 }
 
 BOTONES_ATAQUE = {
