@@ -1,6 +1,7 @@
 import pygame, os,sys
 import estilo
 import mochila
+import gestor_datos
 
 def escenario_tienda(ventana,jugador):
 
@@ -33,19 +34,30 @@ def escenario_tienda(ventana,jugador):
                         menu_jugador["seccion"] = "PRINCIPAL"
                         menu_jugador["indice_seleccionado"] = 0
                 else:
+                   
                     if menu_jugador["seccion"] == "PRINCIPAL":
                         if evento.key == pygame.K_UP:
-                            menu_jugador["indice_seleccionado"] = 0
+                            menu_jugador["indice_seleccionado"] = (menu_jugador["indice_seleccionado"] - 1) % 3
                         elif evento.key == pygame.K_DOWN:
-                            menu_jugador["indice_seleccionado"] = 1
-                        elif evento.key == pygame.K_c: 
-                            menu_jugador["seccion"] = "POKEMONS" if menu_jugador["indice_seleccionado"] == 0 else "OBJETOS"
+                            menu_jugador["indice_seleccionado"] = (menu_jugador["indice_seleccionado"] + 1) % 3
+                        
+                        elif evento.key == pygame.K_c:  
+                            if menu_jugador["indice_seleccionado"] == 0:
+                                menu_jugador["seccion"] = "POKEMONS"
+                            elif menu_jugador["indice_seleccionado"] == 1:
+                                menu_jugador["seccion"] = "OBJETOS"
+                            elif menu_jugador["indice_seleccionado"] == 2:
+                                menu_jugador["seccion"] = "GUARDAR"
+                                gestor_datos.guardar_partida(jugador) 
+                            
                             menu_jugador["indice_seleccionado"] = 0
-                        elif evento.key == pygame.K_x: 
+
+                        elif evento.key == pygame.K_x:  
                             menu_jugador["abierto"] = False
 
-                    elif menu_jugador["seccion"] in ["POKEMONS", "OBJETOS"]:
-                        if evento.key == pygame.K_x: 
+                   
+                    else:
+                        if evento.key == pygame.K_x:  
                             menu_jugador["seccion"] = "PRINCIPAL"
                             menu_jugador["indice_seleccionado"] = 0
 
