@@ -27,27 +27,27 @@ def escenario_tienda(ventana,jugador):
                 sys.exit()
                 
             if evento.type == pygame.KEYDOWN:
-            if not menu_jugador["abierto"]:
-                if evento.key == pygame.K_x:
-                    menu_jugador["abierto"] = True
-                    menu_jugador["seccion"] = "PRINCIPAL"
-                    menu_jugador["indice_seleccionado"] = 0
-            else:
-                if menu_jugador["seccion"] == "PRINCIPAL":
-                    if evento.key == pygame.K_UP:
-                        menu_jugador["indice_seleccionado"] = 0
-                    elif evento.key == pygame.K_DOWN:
-                        menu_jugador["indice_seleccionado"] = 1
-                    elif evento.key == pygame.K_c: 
-                        menu_jugador["seccion"] = "POKEMONS" if menu_jugador["indice_seleccionado"] == 0 else "OBJETOS"
-                        menu_jugador["indice_seleccionado"] = 0
-                    elif evento.key == pygame.K_x: 
-                        menu_jugador["abierto"] = False
-
-                elif menu_jugador["seccion"] in ["POKEMONS", "OBJETOS"]:
-                    if evento.key == pygame.K_x: 
+                if not menu_jugador["abierto"]:
+                    if evento.key == pygame.K_x:
+                        menu_jugador["abierto"] = True
                         menu_jugador["seccion"] = "PRINCIPAL"
                         menu_jugador["indice_seleccionado"] = 0
+                else:
+                    if menu_jugador["seccion"] == "PRINCIPAL":
+                        if evento.key == pygame.K_UP:
+                            menu_jugador["indice_seleccionado"] = 0
+                        elif evento.key == pygame.K_DOWN:
+                            menu_jugador["indice_seleccionado"] = 1
+                        elif evento.key == pygame.K_c: 
+                            menu_jugador["seccion"] = "POKEMONS" if menu_jugador["indice_seleccionado"] == 0 else "OBJETOS"
+                            menu_jugador["indice_seleccionado"] = 0
+                        elif evento.key == pygame.K_x: 
+                            menu_jugador["abierto"] = False
+    
+                    elif menu_jugador["seccion"] in ["POKEMONS", "OBJETOS"]:
+                        if evento.key == pygame.K_x: 
+                            menu_jugador["seccion"] = "PRINCIPAL"
+                            menu_jugador["indice_seleccionado"] = 0
 
         if not menu_jugador["abierto"]:
             teclas = pygame.key.get_pressed()
