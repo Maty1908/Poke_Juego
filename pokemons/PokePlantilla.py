@@ -1,15 +1,12 @@
 import requests
+import io
 from pokemons.Extraer_tipos import Extraer_tabla_tipos
-
 
 Tabla_completa = Extraer_tabla_tipos()
 
-#en cada tipo se esperan atributos unicos (tipo,resistencias,debilidades, efectividades,inmunidades)
-#la tabla de tipos en la variable "Tabla_completa" se encuentra en el archivo "Extraer_tipos.py"
-
 class Pokemon:
-    #--------------INICIADOR-------------------------
-    def __init__(self, id_or_name):
+    # Agregamos es_jugador para decidir qué sprite descargar al instanciarlo
+    def __init__(self, id_or_name, es_jugador=True):
         url = f"https://pokeapi.co/api/v2/pokemon/{str(id_or_name).lower()}"
         res = requests.get(url).json()
         
@@ -25,8 +22,17 @@ class Pokemon:
         self.vida_actual = self.stats["vida_max"]
         self.tipos = [t["type"]["name"] for t in res["types"]]
         
+        # --- DESCARGA DEL GIF BASADO EN EL ROL ---
+        vista = "back_default" if es_jugador else "front_default"
+        try:
+            url_gif = res["sprites"]["versions"]["generation-v"]["black-white"]["animated"][vista]
+            self.gif_bytes = requests.get(url_gif).content
+        except:
+            self.gif_bytes = None
+        # -----------------------------------------
+        
         self.ataques = []
-        moves = res["moves"][:4]  # Tomamos los primeros 4 por simplicidad
+        moves = res["moves"][:4]  
         
         for m in moves:
             nombre_ataque = m["move"]["name"].replace("-", " ").capitalize()
@@ -35,7 +41,6 @@ class Pokemon:
             try:
                 res_ataque = requests.get(url_ataque).json()
                 tipo_ataque = res_ataque["type"]["name"]
-                # Obtenemos el poder real de la API. Si es None (ej: Gruñido/Látigo), le ponemos 40 por defecto
                 poder_ataque = res_ataque.get("power")
                 if poder_ataque is None:
                     poder_ataque = 40
@@ -52,18 +57,12 @@ class Pokemon:
         if not self.ataques:
             self.ataques = [{"nombre": "Placaje", "poder": 40, "tipo": "normal"}]
 
-    #------------------METODOS------------------------------
-
     def calcular_daño_base(self, indice_ataque):
-        """Calcula el daño inicial que genera este Pokémon con un ataque específico"""
         ataque = self.ataques[indice_ataque]
-        # Fórmula: (Ataque del pokemon * Poder del movimiento) // 100 + 5
         return (self.stats["ataque"] * ataque["poder"]) // 100 + 5
 
     def recibir_daño(self, daño_base, tipo_ataque):
         multiplicador = 1.0
-        
-        # Evaluamos efectividades elementales con tu Tabla_completa
         for mi_tipo in self.tipos:
             if mi_tipo in Tabla_completa:
                 if tipo_ataque in Tabla_completa[mi_tipo]["Inmune"]:
@@ -73,7 +72,6 @@ class Pokemon:
                 elif tipo_ataque in Tabla_completa[mi_tipo]["Daño_Doble"]:
                     multiplicador *= 2.0
                     
-        # Mitigación por la defensa de ESTE pokemon (el defensor)
         daño_mitigado = daño_base / (1 + (self.stats["defensa"] / 100))
         daño_final = int(daño_mitigado * multiplicador)
         
