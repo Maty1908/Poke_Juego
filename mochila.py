@@ -1,6 +1,6 @@
 import pygame
 import estilo
-
+import gestor_datos
 
 blanco = (255,255,255)
 
@@ -39,7 +39,7 @@ def dibujar_menu(ventana, jugador, menu):
         txt_titulo = fuente_menu.render("MENU", True, blanco)
         ventana.blit(txt_titulo, (x_menu + 20, 30))
 
-        opciones = ["1. POKEMONS", "2. OBJETOS"]
+        opciones = ["1. POKEMONS", "2. OBJETOS","3. GUARDAR"]
         for i, opc in enumerate(opciones):
             color = (255, 215, 0) if i == menu["indice_seleccionado"] else blanco
             txt_opc = fuente_menu.render(opc, True, color)
@@ -76,6 +76,14 @@ def dibujar_menu(ventana, jugador, menu):
             txt_item = fuente_menu.render(f"{item.capitalize()}: x{cantidad}", True, blanco)
             ventana.blit(txt_item, (x_menu + 25, y_item))
             y_item += 40
+
+        txt_ayuda = fuente_menu.render("[X] Volver", True, (150, 150, 150))
+        ventana.blit(txt_ayuda, (x_menu + 20, estilo.ALTO_VENTANA - 40))
+
+    #-----GUARDAR PARTIDA---------
+    elif menu["seccion"] == "GUARDAR":
+        txt_titulo = fuente_menu.render("PARTIDA GUARDADA", True, blanco)
+        ventana.blit(txt_titulo, (x_menu + 20, 30))
 
         txt_ayuda = fuente_menu.render("[X] Volver", True, (150, 150, 150))
         ventana.blit(txt_ayuda, (x_menu + 20, estilo.ALTO_VENTANA - 40))
