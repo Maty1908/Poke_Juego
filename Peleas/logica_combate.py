@@ -6,7 +6,8 @@ def generar_equipo_rival(cantidad):
     equipo_rival = []
     for _ in range(cantidad):
         id_aleatorio = random.randint(1, 151)
-        equipo_rival.append(Pokemon(id_aleatorio))
+        
+        equipo_rival.append(Pokemon(id_aleatorio, es_jugador=False))
     return equipo_rival
 
 def procesar_turno_logico(pkmn_atacante, pkmn_defensor, indice_ataque):
