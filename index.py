@@ -1,6 +1,6 @@
 import pygame,os
-pygame.init()   #se pone esto primero ya que al importar las funciones con los escenarios
-#              tiene que estar iniciado
+pygame.init()
+
 from Menu.MENU import menu_inicial
 import Personaje
 import estilo
