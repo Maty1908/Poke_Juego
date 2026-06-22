@@ -3,12 +3,10 @@ from PIL import Image, ImageSequence
 import estilo,Personaje
 from pokemons.PokePlantilla import Pokemon
 
-#-------------------GESTOR_GUARDADO--------------------------------------------
 def guardar_partida(jugador):
     lista_pokemons_serializada = []
     
     for poke in jugador.pokemons:
-
         lista_pokemons_serializada.append({
             "nombre": poke.nombre.lower() 
         })
@@ -23,9 +21,7 @@ def guardar_partida(jugador):
     with open("partida.json", "w") as archivo:
         json.dump(datos_a_guardar, archivo, indent=4)
 
-
 def cargar_partida(ruta_defecto=None):
-    
     if not os.path.exists("partida.json"):
         return None
         
@@ -43,7 +39,6 @@ def cargar_partida(ruta_defecto=None):
     
     for datos_poke in datos_pokes:
         nombre_pokemon = datos_poke["nombre"]
-        
         try:
             nuevo_poke = Pokemon(id=nombre_pokemon, es_jugador=True)
             lista_objetos_pokemon.append(nuevo_poke)
@@ -53,7 +48,6 @@ def cargar_partida(ruta_defecto=None):
     jugador_cargado.pokemons = lista_objetos_pokemon
     return jugador_cargado
 
-#-------------------ARCHIVO_SPRITE_COMBATE--------------------------------------
 def procesar_gif(gif_bytes, factor_escala=2.5):
     if not gif_bytes:
         sup_vacia = pygame.Surface((50, 50), pygame.SRCALPHA)
@@ -102,43 +96,29 @@ def obtener_botones_segun_menu(menu, pokemon_obj, offset,jugador):
                 
         return botones_dinamicos
 
-#----------------------------SONIDO---------------------------------------
 def reproducir_musica(musica,bucle):
-
     nombre_archivo = f"Sonido/Musica/{musica}"
-
     try:
         pygame.mixer.music.load(nombre_archivo)
-
         repeticiones = -1 if bucle else 0
-
-        pygame.mixer.music.set_volume(0.2) #volumen se regula entre 0 y 1
-
+        pygame.mixer.music.set_volume(0.2)
         pygame.mixer.music.play(repeticiones)
-
     except pygame.error:
         print("error en archivo de audio")
 
-
 def reproducir_sonido(sonido):
-   
     nombre_archivo = f"Sonido/Efectos/{sonido}"  
-    
     try:
         efecto = pygame.mixer.Sound(nombre_archivo)
         efecto.set_volume(0.6)
         efecto.play()
-        
     except pygame.error:
         print(f"error en archivo de sonido: {nombre_archivo}")
 
-
-#---------------------TIENDA----------------------
 def mostrar_animacion_caja(pantalla, ruta_imagen,pokemon,columnas=4, filas=2):
     try:
         sheet = pygame.image.load(ruta_imagen).convert_alpha()
         fondo_caja = pygame.image.load("img/Tienda/fondo_cajas.png").convert()
-
     except pygame.error as e:
         print(f"Error al cargar la imagen {ruta_imagen}: {e}")
         return
@@ -164,7 +144,6 @@ def mostrar_animacion_caja(pantalla, ruta_imagen,pokemon,columnas=4, filas=2):
         reloj.tick(60)
         ahora = pygame.time.get_ticks()
         
-        # --- Captura de Eventos ---
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
                 pygame.quit()
@@ -175,7 +154,6 @@ def mostrar_animacion_caja(pantalla, ruta_imagen,pokemon,columnas=4, filas=2):
                     esperando_enter = False
                     ultimo_cambio = ahora
 
-        # --- Lógica de la Línea de Tiempo ---
         if ahora - ultimo_cambio > velocidad:
             if not (frame_actual == 5 and esperando_enter):
                 if frame_actual < len(frames) - 1:
@@ -184,7 +162,7 @@ def mostrar_animacion_caja(pantalla, ruta_imagen,pokemon,columnas=4, filas=2):
                     if frame_actual == 5: 
                         esperando_enter = True
                 else:
-                    reproduciendo = False  # Llegó al último frame (caja cerrada/reiniciada), termina
+                    reproduciendo = False
 
         if fondo_caja:
             pantalla.blit(fondo_caja, (0, 0))
@@ -197,9 +175,7 @@ def mostrar_animacion_caja(pantalla, ruta_imagen,pokemon,columnas=4, filas=2):
         
         if esperando_enter:
             fuente = pygame.font.Font("tipografia/pokemon_font.ttf", 22)
-            
             linea1 = fuente.render(f"Te ha salido un {pokemon}!", True, (255, 255, 255))
-            
             linea2 = fuente.render("Presiona ENTER para cerrar", True, (200, 200, 200)) 
             
             x_linea1 = (pantalla.get_width() - linea1.get_width()) // 2
@@ -211,20 +187,16 @@ def mostrar_animacion_caja(pantalla, ruta_imagen,pokemon,columnas=4, filas=2):
             
         pygame.display.flip()
 
-#-----------------------COMBATES (LOGICA)----------------------------------------
 def generar_equipo_rival(cantidad):
     equipo_rival = []
     for _ in range(cantidad):
         id_aleatorio = random.randint(1, 151)
-        
         equipo_rival.append(Pokemon(id_aleatorio, es_jugador=False))
     return equipo_rival
 
 def procesar_turno_logico(pkmn_atacante, pkmn_defensor, indice_ataque):
     ataque = pkmn_atacante.ataques[indice_ataque]
-    
     daño_base = pkmn_atacante.calcular_daño_base(indice_ataque)
-    
     daño_final, mult = pkmn_defensor.recibir_daño(daño_base, ataque["tipo"])
     
     return {
@@ -242,3 +214,28 @@ def aplicar_consecuencias_billetera(jugador, gano_jugador):
         for p in jugador.pokemons:
             p.curar()
 
+def usar_objeto_en_combate(jugador, pokemon_obj, tipo_objeto):
+    cantidad_actual = jugador.inventario.get(tipo_objeto, 0)
+    if cantidad_actual <= 0:
+        return {"exito": False, "mensaje": f"No te quedan {tipo_objeto}s en el inventario!"}
+    
+    if tipo_objeto == "pocion":
+        if pokemon_obj.vida_actual <= 0:
+            return {"exito": False, "mensaje": f"{pokemon_obj.nombre} esta debilitado! Usa un Revivir."}
+        if pokemon_obj.vida_actual >= pokemon_obj.stats["vida_max"]:
+            return {"exito": False, "mensaje": f"{pokemon_obj.nombre} ya tiene la vida al maximo!"}
+        
+        curacion = 50 
+        pokemon_obj.vida_actual = min(pokemon_obj.stats["vida_max"], pokemon_obj.vida_actual + curacion)
+        jugador.inventario["pocion"] -= 1
+        return {"exito": True, "mensaje": f"Usaste Pocion! {pokemon_obj.nombre} recupero HP."}
+        
+    elif tipo_objeto == "revivir":
+        if pokemon_obj.vida_actual > 0:
+            return {"exito": False, "mensaje": f"{pokemon_obj.nombre} no esta debilitado!"}
+        
+        pokemon_obj.vida_actual = pokemon_obj.stats["vida_max"] // 2
+        jugador.inventario["revivir"] -= 1
+        return {"exito": True, "mensaje": f"{pokemon_obj.nombre} ha revivido con la mitad de su HP!"}
+
+    return {"exito": False, "mensaje": "Objeto no reconocido."}
