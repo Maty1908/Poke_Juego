@@ -68,7 +68,7 @@ def menu_inicial(ventana):
             for i, opcion in enumerate(opciones):
                 x = estilo.ANCHO_VENTANA // 2 - 200
                 y = 280 + i * 125
-                rect = pygame.Rect(x,y,350,50)
+                rect = pygame.Rect(x,y,400,50)
                 if rect.collidepoint(pygame.mouse.get_pos()):
                     pygame.draw.rect(ventana,(255, 220, 0),rect,border_radius=15)
                     color_texto = (0, 0, 0)
